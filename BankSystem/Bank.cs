@@ -49,6 +49,28 @@ public class Bank
         }
         
     }
+
+    public Result WithdrawBalance(User user, int desiredAmount)
+    {
+        if(user == null)  throw new Exception("User does not exist");
+        var acc = _accounts.First(el => el.User == user);
+        if(desiredAmount <= 0) return new Result{Succesfull = false, msg = "Desired amount must be greater than 0."};
+        if (acc.GetBalance() < desiredAmount)
+        {
+            return new Result
+            {
+                Succesfull = false, msg = "Your balance must be higher than the desired amount."
+            };
+        }
+        else
+        {
+            acc.Withdraw(desiredAmount);
+            return new Result
+            {
+                Succesfull = true, msg = "Balance updated successfully!"
+            };
+        }
+    }
     
     
     

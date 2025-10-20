@@ -12,10 +12,18 @@ public class Account
         _balance = balance;
     }
 
-    public bool AddBalance(int balance)
+    public void AddBalance(int balance)
     {
         _balance += balance;
-        return true;
+    }
+
+    public int GetBalance()
+    {
+        return _balance;
     }
     
+    public void Withdraw(int amount)
+    {
+        _balance -= amount;
+    }
 }

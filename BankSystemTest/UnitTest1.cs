@@ -52,7 +52,39 @@ public class UnitTest1
         Assert.False(result.Succesfull);
         Assert.Equal("You must add more than 0 currency to your balance.", result.msg);
     }
-    
-    
-    
+
+    [Fact]
+    public void WithdrawBalance_ShouldReturnFalse_IfDesiredAmountIsHigherThanBalance()
+    {
+        //Arrange
+        var bank = new Bank();
+        var user = new User("igna");
+        var desiredAmount = 100;
+        bank.CreateAccount(user, 50);
+        
+        //Act
+        var result = bank.WithdrawBalance(user, desiredAmount);
+        
+        //Assert
+        Assert.False(result.Succesfull);
+        Assert.Equal("Your balance must be higher than the desired amount.", result.msg);
+    }
+
+    [Fact]
+    public void WithdrawBalance_ShouldReturnFalse_IfDesiredAmountIsLowOrEqualTo0()
+    {
+        //Arrange
+        var bank = new Bank();
+        var user = new User("igna");
+        var desiredAmount = 0;
+        bank.CreateAccount(user, 50);
+        
+        //Act
+        var result = bank.WithdrawBalance(user, desiredAmount);
+        
+        //Assert
+        Assert.False(result.Succesfull);
+        Assert.Equal("Desired amount must be greater than 0.", result.msg);
+        
+    }
 }
