@@ -10,11 +10,11 @@ var sourceAcountId = Guid.NewGuid();
 var bank = new Bank();
 
 bank.CreateAccount(user, balance);
-bank.AddBalance(user, balance);
+bank.AddBalanceToAccount(user, balance);
+bank.WithdrawBalanceFromAccount(user, balance);
+bank.GetAccountBalance(user);
 
 
 /*
-bank.GetMoney(accID, balance);
-bank.GetBalance(accID);
-bank.SendMoney(accID, sourceAcountId, balance);
+bank.SendBalance(accID, sourceAcountId, balance);
 */
