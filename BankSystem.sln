@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankSystem", "BankSystem\BankSystem.csproj", "{99AE2CB7-5AA5-451C-87F6-7A60E30DCCAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankSystemTest", "BankSystemTest\BankSystemTest.csproj", "{4C6D276B-8F9F-41BB-AC1B-2B2EDF72D701}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99AE2CB7-5AA5-451C-87F6-7A60E30DCCAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AE2CB7-5AA5-451C-87F6-7A60E30DCCAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AE2CB7-5AA5-451C-87F6-7A60E30DCCAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AE2CB7-5AA5-451C-87F6-7A60E30DCCAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6D276B-8F9F-41BB-AC1B-2B2EDF72D701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6D276B-8F9F-41BB-AC1B-2B2EDF72D701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6D276B-8F9F-41BB-AC1B-2B2EDF72D701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6D276B-8F9F-41BB-AC1B-2B2EDF72D701}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
