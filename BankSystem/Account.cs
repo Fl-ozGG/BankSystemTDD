@@ -2,20 +2,25 @@
 
 public class Account
 {
-    public User User;
-    private Guid Id;
+    private User _user;
+    public User User => _user;
     private int _balance;
     public Account(User user, int balance)
     {
-        User = user;
-        Id = Guid.NewGuid();
+        _user = user;
         _balance = balance;
     }
-
-    public bool AddBalance(int balance)
+    public void AddBalance(int balance)
     {
         _balance += balance;
-        return true;
+    }
+    public void WithdrawBalance(int amount)
+    {
+        _balance -= amount;
+    }
+    public int GetBalance()
+    {
+        return _balance;
     }
     
 }

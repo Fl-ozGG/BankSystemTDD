@@ -3,15 +3,24 @@
 
 using BankSystem;
 
-Console.WriteLine("Hello, World!");
-var user = new User("name");
-var balance = 1;
-var sourceAcountId = Guid.NewGuid();
+
+var igna = new User("igna");
+var alvaro = new User("alvaro");
+var balance = 100;
+var balanceToAdd = 20;
+var balanceToWithdraw = 100;
 var bank = new Bank();
-/*
-var accID = bank.CreateAccount(user, balance).Id;
-bank.GetMoney(accID, balance);
-bank.GetBalance(accID);
-bank.AddBalance(accID, balance);
-bank.SendMoney(accID, sourceAcountId, balance);
-*/
+
+bank.CreateAccount(igna, balance);
+bank.CreateAccount(alvaro, balance);
+bank.GetAccountBalance(igna);
+bank.AddBalanceToAccount(igna, balanceToAdd);
+bank.GetAccountBalance(igna);
+bank.WithdrawBalanceFromAccount(igna, balanceToWithdraw);
+bank.GetAccountBalance(igna);
+bank.SendBalance(igna, alvaro.Id, 50);
+bank.GetAccountBalance(igna);
+bank.GetAccountBalance(alvaro);
+
+
+
