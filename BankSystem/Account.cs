@@ -2,13 +2,12 @@
 
 public class Account
 {
-    public Guid userId;
-    private Guid Id;
+    private User _user;
+    public User User => _user;
     private int _balance;
     public Account(User user, int balance)
     {
-        userId = user.Id;
-        //Id = Guid.NewGuid();
+        _user = user;
         _balance = balance;
     }
     public void AddBalance(int balance)

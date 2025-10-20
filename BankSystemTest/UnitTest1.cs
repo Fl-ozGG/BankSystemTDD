@@ -140,17 +140,23 @@ public class UnitTest1
     }
 
     [Fact]
-    public void SendBalance_ShouldReturnFalse_IfBalanceIsZero()
+    public void SendBalance_ShouldReturnFalse_IfFromAccountHasLessBalanceThanBalanceToSend()
     {
+        //Arrange
+        var bank = new Bank();
+        var user = new User("igna");
+        var user2 = new User("alvaro");
+        bank.CreateAccount(user, 50);
+        bank.CreateAccount(user2, 20);
+        var balanceToSend = 60;
         
-    }
-    
-    
-    [Fact]
-    public void SendBalanceShouldReturnFalse_IfFromAccountBalanceIsNotEnough()
-    {
+        //Act
+        var result = bank.SendBalance(user, user2.Id, balanceToSend);
         
+        //Assert
+        Assert.Equal("Your balance must be higher than the desired amount.", result.msg);
     }
+
 
     
 }

@@ -1,11 +1,11 @@
-﻿using System.Runtime.CompilerServices;
+﻿
 using BankSystemTest;
 
 namespace BankSystem;
 
 public class Bank
 {
-    private List<Account> _accounts = new List<Account>();
+    private readonly List<Account> _accounts = new List<Account>();
 
     public Result CreateAccount(User user, int balance)
     {
@@ -33,7 +33,7 @@ public class Bank
         if (user == null) throw new Exception("User does not exist");
         if (balance > 0)
         {
-            var acc = _accounts.First(el => el.userId == user.Id);
+            var acc = _accounts.First(el => el.User.Id == user.Id);
             acc.AddBalance(balance);
             return new Result
             {
@@ -53,7 +53,7 @@ public class Bank
     public Result WithdrawBalanceFromAccount(User user, int desiredAmount)
     {
         if(user == null)  throw new Exception("User does not exist");
-        var acc = _accounts.First(el => el.userId == user.Id);
+        var acc = _accounts.First(el => el.User.Id == user.Id);
         if(desiredAmount <= 0) return new Result{Succesfull = false, msg = "Desired amount must be greater than 0."};
         if (acc.GetBalance() < desiredAmount)
         {
@@ -74,18 +74,26 @@ public class Bank
 
     public int GetAccountBalance(User user)
     {
-        return  _accounts.First(el => el.userId == user.Id).GetBalance();
+        return  _accounts.First(el => el.User.Id == user.Id).GetBalance();
         
     }
 
-    public Result SendBalance(User user, Guid userId, int balanceToSend)
+    public Result SendBalance(User user, Guid userId, int balance)
     {
-        var fromAccount = _accounts.Find(el => el.userId == user.Id);
+        var fromAccount = _accounts.Find(el => el.User.Id == user.Id);
         if(fromAccount == null) throw new Exception("The Account you are using does not exist you need to create one first.");
-        var toAccount = _accounts.Find(el => el.userId == userId);
+        var toAccount = _accounts.Find(el => el.User.Id == userId);
         if(toAccount == null) throw new Exception("The user you are trying to reach does not exist");
-        fromAccount.WithdrawBalance(balanceToSend);
-        toAccount.AddBalance(balanceToSend);
+       
+        if (WithdrawBalanceFromAccount(fromAccount.User, balance).Succesfull==false)
+        {
+            return WithdrawBalanceFromAccount(fromAccount.User, balance);
+        }
+
+        if (AddBalanceToAccount(toAccount.User, balance).Succesfull == false)
+        {
+            return AddBalanceToAccount(toAccount.User, balance);
+        }
         return new Result
         {
             Succesfull = true, msg = "Balance sent successfully!"
