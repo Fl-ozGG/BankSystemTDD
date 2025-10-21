@@ -9,152 +9,137 @@ public class UnitTest1
     {
         //Arrange
         var bank = new Bank();
-        var user = new User("igna");
-        var balance = 0;
+        var igna = new User("igna");
+        var amountIgna = 0;
         
         //Act
-        var result = bank.CreateAccount(user, balance);
+        var response = bank.CreateAccount(igna, amountIgna);
         
         //Assert
-        Assert.False(result.Succesfull);
-        Assert.Equal("Your balance must be higher than 0.",result.msg);
+        Assert.False(response.data.Succesfull);
+        Assert.Equal("Your balance must be higher than 0.",response.data.msg);
     }
+    
     [Fact]
     public void CreateAccount_ShouldReturnTrue_IfBalanceIsHigherThan0()
     {
         //Arrange
         var bank = new Bank();
-        var user = new User("igna");
-        var balance = 100;
-        
+        var igna = new User("igna");
+        var amountIgna = 10;
+
         //Act
-        var result = bank.CreateAccount(user, balance);
+        var response = bank.CreateAccount(igna, amountIgna);
         
         //Assert
-        Assert.True(result.Succesfull);
-        Assert.Equal("Account created successfully!",result.msg);
-        
-        
+        Assert.True(response.data.Succesfull);
+        Assert.Equal("Account created successfully!",response.data.msg);   
     }
     
     [Fact]
-    public void AddBalance_ShouldReturnFalse_IfBalanceIsZero()
+    public void Deposit_ShouldReturnFalse_IfDepositAmountIsZero()
     {
         //Arrange
         var bank = new Bank();
-        var user = new User("igna");
-        var balance = 0;
+        var igna = new User("igna");
+        var amountIgna = 100;
+        var amountToAdd = 0;
+        var response = bank.CreateAccount(igna, amountIgna);
+        var acc = response.account!;
         
         //Act
-        var result = bank.AddBalanceToAccount(user, balance);
+        acc.Deposit(amountToAdd);
+        
+        //Assert
+        Assert.False(response.data.Succesfull);
+        Assert.Equal("You must add more than 0 currency to your balance.",response.data.msg);
+    }
+
+    [Fact]
+    public void Withdraw_ShouldReturnFalse_IfDesiredAmountIsHigherThanBalance()
+    {
+        //Arrange
+        var bank = new Bank();
+        var igna = new User("igna");
+        var amountIgna = 50;
+        var amountToWithdraw = 100;
+        var response = bank.CreateAccount(igna, amountIgna);
+        var acc = response.account!;
+        
+        //Act
+        var result = acc.Withdraw(amountToWithdraw);
         
         //Assert
         Assert.False(result.Succesfull);
-        Assert.Equal("You must add more than 0 currency to your balance.", result.msg);
+        Assert.Equal("You cannot withdraw more than your actual amount.",result.msg);
     }
-
+    
     [Fact]
-    public void WithdrawBalance_ShouldReturnFalse_IfDesiredAmountIsHigherThanBalance()
+    public void Withdraw_ShouldReturnFalse_IfDesiredAmountIsEqualTo0()
     {
         //Arrange
         var bank = new Bank();
-        var user = new User("igna");
-        var desiredAmount = 100;
-        bank.CreateAccount(user, 50);
+        var igna = new User("igna");
+        var amountIgna = 50;
+        var amountToWithdraw = 0;
+        var response = bank.CreateAccount(igna, amountIgna);
+        var acc = response.account!;
         
         //Act
-        var result = bank.WithdrawBalanceFromAccount(user, desiredAmount);
+        var result = acc.Withdraw(amountToWithdraw);
         
         //Assert
         Assert.False(result.Succesfull);
-        Assert.Equal("Your balance must be higher than the desired amount.", result.msg);
+        Assert.Equal("Desired amount must be greater than 0.",result.msg);
     }
-
+    
     [Fact]
-    public void WithdrawBalance_ShouldReturnFalse_IfDesiredAmountIsLowOrEqualTo0()
+    public void Transfer_ShouldUpdate_Accounts()
     {
         //Arrange
         var bank = new Bank();
-        var user = new User("igna");
-        var desiredAmount = 0;
-        bank.CreateAccount(user, 50);
+        var igna = new User("igna");
+        var alvaro = new User("alvaro");
+        var amountIgna = 100;
+        var amountAlvaro = 150;
+        
+        var responseIgna = bank.CreateAccount(igna, amountIgna);
+        var responseAlvaro = bank.CreateAccount(igna, amountAlvaro);
+        var accIgna = responseIgna.account!;
+        var accAlvaro = responseAlvaro.account!;
         
         //Act
-        var result = bank.WithdrawBalanceFromAccount(user, desiredAmount);
+
+        var result = accIgna.Transfer(accAlvaro, 50);
+        
+        //Assert
+        Assert.Equal(50, accIgna.Balance);
+        Assert.Equal(200,accAlvaro.Balance);
+    }
+    
+
+    [Fact]
+    public void Transfer_ShouldReturnFalse_IfFromAccountHasLessBalanceThanCashAmountToSend()
+    {
+        //Arrange
+        var bank = new Bank();
+        var igna = new User("igna");
+        var alvaro = new User("alvaro");
+        var amountIgna = 100;
+        var amountAlvaro = 150;
+        
+        var responseIgna = bank.CreateAccount(igna, amountIgna);
+        var responseAlvaro = bank.CreateAccount(igna, amountAlvaro);
+        var accIgna = responseIgna.account!;
+        var accAlvaro = responseAlvaro.account!;
+        
+        //Act
+
+        var result = accIgna.Transfer(accAlvaro, 150);
         
         //Assert
         Assert.False(result.Succesfull);
-        Assert.Equal("Desired amount must be greater than 0.", result.msg);
-        
-    }
-    [Fact]
-    public void GetAccountBalance_MustReturnBalance()
-    {
-        //Arrange
-        var bank = new Bank();
-        var user = new User("igna");
-        bank.CreateAccount(user, 100);
-        var result = bank.GetAccountBalance(user);
-        bank.AddBalanceToAccount(user, 50);
-        var resultAfterAddBalance = bank.GetAccountBalance(user);
-        
-        Assert.Equal(100, result);
-        Assert.Equal(150, resultAfterAddBalance);
-    }
-
-    [Fact]
-    public void SendBalance_ShouldUpdate_FromAccount()
-    {
-        //Arrange
-        var bank = new Bank();
-        var user = new User("igna");
-        var user2 = new User("alvaro");
-        bank.CreateAccount(user, 100);
-        bank.CreateAccount(user2, 200);
-        var balanceToSend = 50;
-        
-        //Act
-        bank.SendBalance(user, user2.Id, balanceToSend);
-        
-        //Assert
-        var resultAfterSend = bank.GetAccountBalance(user);
-        Assert.Equal(50, resultAfterSend);
-    }
-    [Fact]
-    public void SendBalance_ShouldUpdate_ToAccount()
-    {
-        //Arrange
-        var bank = new Bank();
-        var user = new User("igna");
-        var user2 = new User("alvaro");
-        bank.CreateAccount(user, 100);
-        bank.CreateAccount(user2, 200);
-        var balanceToSend = 50;
-        
-        //Act
-        bank.SendBalance(user, user2.Id, balanceToSend);
-        
-        //Assert
-        var resultAfterSend = bank.GetAccountBalance(user2);
-        Assert.Equal(250, resultAfterSend);
-    }
-
-    [Fact]
-    public void SendBalance_ShouldReturnFalse_IfFromAccountHasLessBalanceThanBalanceToSend()
-    {
-        //Arrange
-        var bank = new Bank();
-        var user = new User("igna");
-        var user2 = new User("alvaro");
-        bank.CreateAccount(user, 50);
-        bank.CreateAccount(user2, 20);
-        var balanceToSend = 60;
-        
-        //Act
-        var result = bank.SendBalance(user, user2.Id, balanceToSend);
-        
-        //Assert
-        Assert.Equal("Your balance must be higher than the desired amount.", result.msg);
+        Assert.Equal("You were not able to withdraw more than your actual amount to transfer.",result.msg);
     }
 
 

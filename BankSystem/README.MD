@@ -1,4 +1,6 @@
-﻿💡 Ejercicio: “Sistema de Gestión de Cuentas Bancarias”
+﻿💡 
+
+Ejercicio: “Sistema de Gestión de Cuentas Bancarias”
 🧩 Descripción general
 
 Crea un pequeño sistema que modele cuentas bancarias y permita:
